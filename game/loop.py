@@ -4,6 +4,7 @@ Runs a fixed timestep with a variable rate render:
 """
 
 import asyncio
+import os
 
 import pyray as rl
 
@@ -21,6 +22,9 @@ from game.state import GameState
 
 
 async def run() -> None:
+    # Force GLFW onto its X11 backend (via XWayland). The pyray wheel ships both
+    os.environ.pop("WAYLAND_DISPLAY", None)
+
     rl.init_window(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, WINDOW_TITLE)
     rl.set_target_fps(TARGET_FPS)
 
