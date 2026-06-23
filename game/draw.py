@@ -17,7 +17,7 @@ def draw(state: GameState, alpha: float) -> None:
         sprite_y = 40
         state.sprite.draw(sprite_x, sprite_y)
 
-    if state.show_grid:
+    if state.grid_state.show_grid:
         draw_grid()
 
     FPS_TEXT_POS_X = VIEWPORT_WIDTH - 90

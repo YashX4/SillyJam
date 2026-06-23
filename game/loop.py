@@ -30,7 +30,7 @@ async def run() -> None:
 
     while not rl.window_should_close():
 
-        controls.handle_input(state)
+        controls.handle_input(state.grid_state)
 
         state.sprite.update(rl.get_frame_time())
 
