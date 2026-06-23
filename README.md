@@ -33,3 +33,6 @@ To build and launch a webserver with the WASM version use command:
 ```bash
 uv run pygbag main.py
 ``` 
+
+## building binaries for windows, mac, linux:
+(oto TODO:)
