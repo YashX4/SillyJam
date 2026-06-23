@@ -7,7 +7,8 @@ import asyncio
 
 import pyray as rl
 
-from game import controls, demo_sprite, draw, physics
+from game import controls, draw, physics
+from game.animated_sprites import demo_sprite
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
