@@ -3,6 +3,7 @@ import pyray as rl
 from game import grid
 from game.config import CELL_SIZE, VIEWPORT_WIDTH, VIEWPORT_HEIGHT
 from game.state import GameState
+from game.types import PipeSprite
 
 
 def draw(state: GameState, alpha: float) -> None:
@@ -30,11 +31,14 @@ def draw(state: GameState, alpha: float) -> None:
 
 
 def draw_pipes(state: GameState) -> None:
-    """Draw each cell's pipe sprite, indexed by its grid value."""
+    """Draw each cell's pipe sprite."""
     for row, cells in enumerate(state.grid_state.grid):
         for col, pipe_value in enumerate(cells):
+            pipe = PipeSprite(pipe_value)
+            if pipe is PipeSprite.AIR:
+                continue
             x, y = grid.cell_coords_to_top_left_pixel(col, row)
-            state.pipe_sheet.draw_frame(pipe_value, x, y)
+            state.pipe_sheet.draw_frame(pipe, x, y)
 
 
 def draw_grid() -> None:
