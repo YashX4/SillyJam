@@ -11,6 +11,7 @@ from game.state import GridState
 
 
 def handle_input(gridstate: GridState) -> None:
+    handle_mouse_move(gridstate)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_P):
         gridstate.show_grid = not gridstate.show_grid
 
