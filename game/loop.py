@@ -7,7 +7,7 @@ import asyncio
 
 import pyray as rl
 
-from game import controls, draw, physics
+from game import controls, demo_sprite, draw, physics
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
@@ -24,11 +24,14 @@ async def run() -> None:
     rl.set_target_fps(TARGET_FPS)
 
     state = GameState()
+    state.sprite = demo_sprite.load_demo_sprite()
     dt_accumulator = 0.0
 
     while not rl.window_should_close():
 
         controls.handle_input(state)
+
+        state.sprite.update(rl.get_frame_time())
 
         # aka avoid spiral of death.
         dt_accumulator += min(rl.get_frame_time(), MAX_FRAME_TIME)
@@ -44,4 +47,5 @@ async def run() -> None:
         # Yield to the event loop (required for the pygbag web build).
         await asyncio.sleep(0)
 
+    state.sprite.unload()
     rl.close_window()
