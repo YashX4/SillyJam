@@ -38,7 +38,8 @@ def draw_pipes(state: GameState) -> None:
             if pipe is PipeSprite.AIR:
                 continue
             x, y = grid.cell_coords_to_top_left_pixel(col, row)
-            state.pipe_sheet.draw_frame(pipe, x, y)
+            if state.pipe_sheet is not None:
+                state.pipe_sheet.draw_frame(pipe, x, y)
 
 
 def draw_grid() -> None:
