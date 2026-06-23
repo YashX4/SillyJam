@@ -9,13 +9,14 @@ def draw(state: GameState, alpha: float) -> None:
     rl.begin_drawing()
     rl.clear_background(rl.RAYWHITE)
 
+    if state.pipe_sheet is not None:
+        draw_pipes(state)
+
     if state.sprite is not None:
         sprite_x = 40
         sprite_y = 40
         state.sprite.draw(sprite_x, sprite_y)
 
-    if state.pipe_sheet is not None:
-        draw_pipes(state)
 
     if state.grid_state.show_grid:
         xPos, yPos = grid.cell_to_px(state.grid_state.curr_hovered_cell)
