@@ -9,7 +9,7 @@ import os
 import pyray as rl
 
 from game import controls, draw, physics
-from game.animated_sprites import demo_sprite
+from game.sprite_data import demo_sprite, pipes
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
@@ -30,6 +30,7 @@ async def run() -> None:
 
     state = GameState()
     state.sprite = demo_sprite.load_demo_sprite()
+    state.pipe_sheet = pipes.load_pipe_sheet()
     dt_accumulator = 0.0
 
     while not rl.window_should_close():
@@ -53,4 +54,5 @@ async def run() -> None:
         await asyncio.sleep(0)
 
     state.sprite.unload()
+    state.pipe_sheet.unload()
     rl.close_window()

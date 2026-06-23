@@ -7,7 +7,7 @@ Mutable game state.
 from dataclasses import dataclass, field
 
 from game.types import Cell
-from game.spritesheet import AnimatedSprite
+from game.spritesheet import AnimatedSprite, SpriteSheet
 from game.config import GRID_COLS, GRID_ROWS
 
 INITIAL_X = 400.0
@@ -27,5 +27,6 @@ class GameState:
 
     grid_state: GridState = field(default_factory=GridState)
 
-    # Loaded after init_window (needs a GL context), so it starts as None.
+    # Loaded after init_window (needs a GL context), so they start as None.
     sprite: AnimatedSprite | None = None
+    pipe_sheet: SpriteSheet | None = None

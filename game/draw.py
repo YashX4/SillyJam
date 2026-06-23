@@ -14,6 +14,9 @@ def draw(state: GameState, alpha: float) -> None:
         sprite_y = 40
         state.sprite.draw(sprite_x, sprite_y)
 
+    if state.pipe_sheet is not None:
+        draw_pipes(state)
+
     if state.grid_state.show_grid:
         xPos, yPos = grid.cell_to_px(state.grid_state.curr_hovered_cell)
         rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
@@ -23,6 +26,14 @@ def draw(state: GameState, alpha: float) -> None:
     FPS_TEXT_POS_Y = 10
     rl.draw_fps(FPS_TEXT_POS_X, FPS_TEXT_POS_Y)
     rl.end_drawing()
+
+
+def draw_pipes(state: GameState) -> None:
+    """Draw each cell's pipe sprite, indexed by its grid value."""
+    for row, cells in enumerate(state.grid_state.grid):
+        for col, pipe_value in enumerate(cells):
+            x, y = grid.cell_coords_to_top_left_pixel(col, row)
+            state.pipe_sheet.draw_frame(pipe_value, x, y)
 
 
 def draw_grid() -> None:
