@@ -1,6 +1,39 @@
 # type cell which contains an x and y coordinate in the grid and a color value:
 from dataclasses import dataclass, field
-from enum import IntEnum
+from enum import Enum, IntEnum
+
+
+class Direction(Enum):
+    """A cardinal direction, with its (dx, dy) step in grid coordinates.
+
+    y grows downward, so NORTH is dy=-1 (up) and SOUTH is dy=+1 (down).
+    """
+
+    NORTH = (0, -1)
+    SOUTH = (0, 1)
+    EAST = (1, 0)
+    WEST = (-1, 0)
+
+    @property
+    def dx(self) -> int:
+        return self.value[0]
+
+    @property
+    def dy(self) -> int:
+        return self.value[1]
+
+    @property
+    def opposite(self) -> "Direction":
+        return Direction((-self.dx, -self.dy))
+
+    @classmethod
+    def from_delta(cls, dx: int, dy: int) -> "Direction | None":
+        """The direction matching this step, or None if it isn't one cell
+        orthogonally (diagonals, zero, or jumps > 1 all return None)."""
+        try:
+            return cls((dx, dy))
+        except ValueError:
+            return None
 
 
 class PipeSprite(IntEnum):
@@ -8,7 +41,6 @@ class PipeSprite(IntEnum):
 
     Named by the directions a pipe connects to / can be entered from.
     AIR is empty
-    `frame_index` (i.e. value - 1, since AIR has no frame). 16 options total:
       - 1 empty (AIR)
       - 6 two-way pieces (straights + corners)
       - 4 three-way pieces (T-junctions)
@@ -44,9 +76,14 @@ class PipeSprite(IntEnum):
         return members[(self.value + 1) % len(members)]
 
     @property
-    def frame_index(self) -> int:
-        """Index of this pipe's frame in Pipes.png. Invalid for AIR."""
-        return self.value - 1
+    def openings(self) -> frozenset[Direction]:
+        """The directions this pipe connects to, derived from its name.
+
+        e.g. NORTH_WEST -> {NORTH, WEST}; AIR -> {} (no openings).
+        """
+        if self is PipeSprite.AIR:
+            return frozenset()
+        return frozenset(Direction[token] for token in self.name.split("_"))
 
 
 @dataclass
