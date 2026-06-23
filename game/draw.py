@@ -15,7 +15,7 @@ def draw(state: GameState, alpha: float) -> None:
     if state.sprite is not None:
         sprite_x = 40
         sprite_y = 40
-        state.sprite.draw(sprite_x, sprite_y, scale=4.0)
+        state.sprite.draw(sprite_x, sprite_y)
 
     if state.show_grid:
         draw_grid()
