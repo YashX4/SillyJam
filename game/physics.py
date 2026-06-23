@@ -8,11 +8,15 @@ from game.state import GameState
 
 def step(state: GameState, dt: float) -> None:
     """Advance the game state by one fixed timestep of `dt` seconds."""
-    state.x += state.some_increase_speed * dt
+    # Snapshot the pre-step position so the renderer can interpolate toward it.
+    state.prev_x = state.x
+    state.prev_y = state.y
+
+    state.x += state.move_speed * dt
 
     if state.x < 0:
         state.x = 0
-        state.some_increase_speed = -state.some_increase_speed
+        state.move_speed = -state.move_speed
     elif state.x > VIEWPORT_WIDTH:
         state.x = VIEWPORT_WIDTH
-        state.some_increase_speed = -state.some_increase_speed
+        state.move_speed = -state.move_speed
