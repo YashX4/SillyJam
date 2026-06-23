@@ -6,7 +6,12 @@ A cell is identified by its (col, row) position in the grid.
 from game.config import CELL_SIZE
 from game.types import Cell
 
-def cell_to_top_left_pixel(col: int, row: int) -> tuple[int, int]:
+def cell_to_px(cell: Cell) -> tuple[int, int]:
+    """Return the top-left pixel (x, y) of the given cell."""
+    return cell_coords_to_top_left_pixel(cell.x, cell.y)
+
+
+def cell_coords_to_top_left_pixel(col: int, row: int) -> tuple[int, int]:
     """Return the top-left pixel (x, y) of the given cell."""
     return (col * CELL_SIZE, row * CELL_SIZE)
 

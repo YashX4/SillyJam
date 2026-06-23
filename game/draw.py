@@ -1,5 +1,6 @@
 import pyray as rl
 
+from game import grid
 from game.config import CELL_SIZE, VIEWPORT_WIDTH, VIEWPORT_HEIGHT
 from game.state import GameState
 
@@ -8,15 +9,14 @@ def draw(state: GameState, alpha: float) -> None:
     rl.begin_drawing()
     rl.clear_background(rl.RAYWHITE)
 
-    #todo show this in the current hovered cell when in debug mode: 
-    # rl.draw_circle(int(render_x), int(render_y), 20, rl.RED)
-
     if state.sprite is not None:
         sprite_x = 40
         sprite_y = 40
         state.sprite.draw(sprite_x, sprite_y)
 
     if state.grid_state.show_grid:
+        xPos, yPos = grid.cell_to_px(state.grid_state.curr_hovered_cell)
+        rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
         draw_grid()
 
     FPS_TEXT_POS_X = VIEWPORT_WIDTH - 90

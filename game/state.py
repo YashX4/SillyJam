@@ -16,7 +16,7 @@ INITIAL_Y = 225.0
 @dataclass
 class GridState:
     show_grid: bool = False
-    curr_hovered_cell: Cell | None = None
+    curr_hovered_cell: Cell = field(default_factory=lambda: Cell(x=0, y=0, color=(0, 0, 0)))
 
     grid: list[list[int]] = field(
         default_factory=lambda: [[0] * GRID_COLS for _ in range(GRID_ROWS)]
