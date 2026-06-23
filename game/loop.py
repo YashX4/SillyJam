@@ -11,8 +11,8 @@ from game import controls, draw, physics
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
-    SCREEN_HEIGHT,
-    SCREEN_WIDTH,
+    VIEWPORT_HEIGHT,
+    VIEWPORT_WIDTH,
     TARGET_FPS,
     WINDOW_TITLE,
 )
@@ -20,7 +20,7 @@ from game.state import GameState
 
 
 async def run() -> None:
-    rl.init_window(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE)
+    rl.init_window(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, WINDOW_TITLE)
     rl.set_target_fps(TARGET_FPS)
 
     state = GameState()

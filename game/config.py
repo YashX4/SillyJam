@@ -3,8 +3,11 @@
 constants used to adjust window size, timing, etc.
 """
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 450
+# Render area we draw into, in pixels. This is the size passed to
+# init_window, but a tiling compositor may give the actual OS window a
+# different size — physics and drawing are all in viewport coordinates.
+VIEWPORT_WIDTH = 800
+VIEWPORT_HEIGHT = 450
 WINDOW_TITLE = "spin to win game"
 
 CELL_SIZE = 32

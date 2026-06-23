@@ -2,7 +2,7 @@
 Physics step.
 """
 
-from game.config import SCREEN_WIDTH, SCREEN_HEIGHT
+from game.config import VIEWPORT_WIDTH, VIEWPORT_HEIGHT
 from game.state import GameState
 
 
@@ -13,6 +13,6 @@ def step(state: GameState, dt: float) -> None:
     if state.x < 0:
         state.x = 0
         state.some_increase_speed = -state.some_increase_speed
-    elif state.x > SCREEN_WIDTH:
-        state.x = SCREEN_WIDTH
+    elif state.x > VIEWPORT_WIDTH:
+        state.x = VIEWPORT_WIDTH
         state.some_increase_speed = -state.some_increase_speed
