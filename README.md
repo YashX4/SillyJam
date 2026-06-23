@@ -24,3 +24,12 @@ uv run python main.py
 ```
 
 `uv run` activates the project environment automatically — no need to manually create or activate a venv. A window titled "Hello raylib from Python" should open.
+
+
+
+## building for web:
+To build for web we use pygbag. It builds a WASM vesion of the game which can be accessed over a small hosted server.
+To build and launch a webserver with the WASM version use command: 
+```bash
+uv run pygbag main.py
+``` 
