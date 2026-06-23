@@ -8,9 +8,8 @@ def draw(state: GameState, alpha: float) -> None:
     rl.begin_drawing()
     rl.clear_background(rl.RAYWHITE)
 
-    render_x = state.prev_x + (state.x - state.prev_x) * alpha
-    render_y = state.prev_y + (state.y - state.prev_y) * alpha
-    rl.draw_circle(int(render_x), int(render_y), 20, rl.RED)
+    #todo show this in the current hovered cell when in debug mode: 
+    # rl.draw_circle(int(render_x), int(render_y), 20, rl.RED)
 
     if state.sprite is not None:
         sprite_x = 40

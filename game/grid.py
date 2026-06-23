@@ -3,16 +3,8 @@
 A cell is identified by its (col, row) position in the grid.
 """
 
-from dataclasses import dataclass
-
 from game.config import CELL_SIZE
-
-# type cell which contains an x and y coordinate in the grid and a color value:
-@dataclass
-class Cell:
-    x: int
-    y: int
-    color: tuple[int, int, int]
+from game.types import Cell
 
 def cell_to_top_left_pixel(col: int, row: int) -> tuple[int, int]:
     """Return the top-left pixel (x, y) of the given cell."""
