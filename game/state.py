@@ -4,8 +4,9 @@ Mutable game state.
 - read by draw loop 
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from game.spritesheet import AnimatedSprite
+from game.config import GRID_COLS, GRID_ROWS
 
 INITIAL_X = 400.0
 INITIAL_Y = 225.0
@@ -20,6 +21,10 @@ class GameState:
     prev_y: float = INITIAL_Y
 
     show_grid: bool = False
+
+    grid: list[list[int]] = field(
+        default_factory=lambda: [[0] * GRID_COLS for _ in range(GRID_ROWS)]
+    )
 
     # Loaded after init_window (needs a GL context), so it starts as None.
     sprite: AnimatedSprite | None = None
