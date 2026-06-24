@@ -43,15 +43,19 @@ class PipeSprite(IntEnum):
     NORTH_SOUTH = 1
     EAST_WEST = 2
     # two-way: corners
-    NORTH_EAST = 3
-    NORTH_WEST = 4
+    NORTH_WEST = 3
+    NORTH_EAST = 4
     SOUTH_EAST = 5
     SOUTH_WEST = 6
+
+    # 7,8,9,10 are special cases we deal with later
+    # NORTH_SOUTH_EAST = 7
+    # NORTH_SOUTH_WEST = 8
+    # NORTH_EAST_WEST = 9
+    # SOUTH_EAST_WEST = 10
+
     # three-way: T-junctions
-    NORTH_SOUTH_EAST = 7
-    NORTH_SOUTH_WEST = 8
-    NORTH_EAST_WEST = 9
-    SOUTH_EAST_WEST = 10
+
     # four-way: cross
     NORTH_SOUTH_EAST_WEST = 11
     # one-way: dead-end caps
