@@ -34,23 +34,24 @@ def adjacent(cell_a: Cell, cell_b: Cell) -> bool:
     dy = cell_a.y - cell_b.y
     return abs(dx) + abs(dy) == 1
 
-def cells_connected(cell_a: Cell, cell_b: Cell) -> bool:
-    # check cell_a and cell_b are adjacent coords
-    if not adjacent(cell_a, cell_b):
+def cells_connected(from_cell: Cell, to_cell: Cell, direction: Direction) -> bool:
+    # check from_cell and to_cell are adjacent coords
+    if not adjacent(from_cell, to_cell):
         return False
-    return False #todo
+    if direction.opposite() in to_cell.pipe.openings():
+        return True
+    return False
 
 
 def connected_neighbors(grid: GridState, cell: Cell) -> list[Cell]:
     """All orthogonally adjacent cells that share a pipe connection with `cell`."""
     neighbors = []
     for direction in Direction:
-        # get the neighbor cell in that direction from the grid:
-        adj_x = cell.x + direction.dir_x
-        adj_y = cell.y + direction.dir_y
+        adj_x: int  = cell.x + direction.dir_x
+        adj_y: int  = cell.y + direction.dir_y
         if not in_bounds(adj_x, adj_y):
             continue
-        neighbor = grid.grid[adj_y][adj_x]
-        if cells_connected(cell, neighbor):
-            neighbors.append(neighbor)
+        adj_cell: Cell = grid.grid[adj_y][adj_x]
+        if cells_connected(cell, adj_cell, direction):
+            neighbors.append(adj_cell)
     return neighbors

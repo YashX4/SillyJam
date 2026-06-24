@@ -22,7 +22,6 @@ class Direction(Enum):
     def dir_y(self) -> int:
         return self.value[1]
 
-    @property
     def opposite(self) -> "Direction":
         return Direction((-self.dir_x, -self.dir_y))
 
@@ -66,7 +65,6 @@ class PipeSprite(IntEnum):
         members = list(PipeSprite)
         return members[(self.value + 1) % len(members)]
 
-    @property
     def openings(self) -> frozenset[Direction]:
         """The directions this pipe connects to, derived from its name.
 
@@ -74,8 +72,8 @@ class PipeSprite(IntEnum):
         """
         if self is PipeSprite.AIR:
             return frozenset()
-        return frozenset(Direction[token] for token in self.name.split("_"))
-
+        directions = (Direction[token] for token in self.name.split("_"))
+        return frozenset(directions)    
 
 @dataclass
 class Cell:
