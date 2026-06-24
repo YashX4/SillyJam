@@ -71,3 +71,4 @@ class GameState:
     pipe_sheet: SpriteSheet | None = None
     water_pipe_sheet: SpriteSheet | None = None
     ballbot: FrameSprite | None = None
+    pump_sprite: FrameSprite | None = None

@@ -6,7 +6,9 @@ with the PipeSprite enum (NORTH_SOUTH=0 .. WEST=14), so we expose just those
 and index them directly by a cell's pipe_sprite value.
 """
 
-from game.spritesheet import SpriteSheet
+import pyray as rl
+
+from game.spritesheet import FrameSprite, SpriteSheet
 
 PIPES_SHEET_PATH = "assets/images/pipes_with_air_space.png"
 # Companion sheet: identical frame layout but with water in each pipe.
@@ -34,3 +36,15 @@ def load_pipe_sheet() -> SpriteSheet:
 def load_water_pipe_sheet() -> SpriteSheet:
     """Load the water-filled pipe sheet as a SpriteSheet. Call after rl.init_window()."""
     return _load_sheet(PIPES_WATER_SHEET_PATH)
+
+
+# Pump animation: ships as 4 individual 32x32 frames, drawn over source cells.
+PUMP_PIPE_FRAMES = [
+    f"assets/images/pump_pipe_animation/pump_pipe{i}.png" for i in range(1, 5)
+]
+
+
+def load_pump_pipe_sprite(fps: float = 8.0) -> FrameSprite:
+    """Load the pump pipe frames as an animated sprite. Call after rl.init_window()."""
+    textures = [rl.load_texture(path) for path in PUMP_PIPE_FRAMES]
+    return FrameSprite(textures, fps=fps)

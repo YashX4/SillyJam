@@ -53,9 +53,12 @@ def draw_pipes(state: GameState) -> None:
     """Draw each cell's pipe sprite."""
     for  row_num, row in enumerate(state.grid_state.grid):
         for col_num, cell in enumerate(row):
+            x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
+            if cell.is_source and state.pump_sprite is not None:
+                state.pump_sprite.draw(x, y)
+                continue
             if cell.pipe is PipeSprite.AIR:
                 continue
-            x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
             # Cells with flow use the water-filled variant of the same frame.
             sheet = state.pipe_sheet
             if cell.has_flow and state.water_pipe_sheet is not None:

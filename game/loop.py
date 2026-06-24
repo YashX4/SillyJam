@@ -35,6 +35,7 @@ async def run() -> None:
     state.pipe_sheet = pipes.load_pipe_sheet()
     state.water_pipe_sheet = pipes.load_water_pipe_sheet()
     state.ballbot = ballbot.load_ballbot()
+    state.pump_sprite = pipes.load_pump_pipe_sprite()
     dt_accumulator = 0.0
 
     # Test dialogs (see prompt): "[" opens a 3-sentence one, "]" a simple one.
@@ -78,6 +79,8 @@ async def run() -> None:
             controls.handle_input(state)
 
         state.sprite.update(rl.get_frame_time())
+        if state.pump_sprite is not None:
+            state.pump_sprite.update(rl.get_frame_time())
 
         # aka avoid spiral of death.
         dt_accumulator += min(rl.get_frame_time(), MAX_FRAME_TIME)
@@ -100,4 +103,6 @@ async def run() -> None:
     state.water_pipe_sheet.unload()
     if state.ballbot is not None:
         state.ballbot.unload()
+    if state.pump_sprite is not None:
+        state.pump_sprite.unload()
     rl.close_window()
