@@ -26,7 +26,13 @@ class Scene(Enum):
 @dataclass
 class GridState:
     show_grid: bool = False
-    
+
+    # Debug rectangle: red outline spanning from `debug_rect_tl` (top-left cell)
+    # to `debug_rect_br` (bottom-right cell), inclusive. Toggled with ";".
+    show_debug_rect: bool = False
+    debug_rect_tl: Cell = field(default_factory=lambda: Cell(x=0, y=0))
+    debug_rect_br: Cell = field(default_factory=lambda: Cell(x=4, y=4))
+
     def get_hover_cell(self, mouse_x, mouse_y) -> Cell:
         coords: Cell = grid.pixel_to_cell(mouse_x, mouse_y)
         if grid.in_bounds(coords.x, coords.y):

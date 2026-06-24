@@ -43,6 +43,9 @@ def draw(state: GameState, alpha: float) -> None:
         draw_sources(state)
         draw_flow(state)
 
+    if state.grid_state.show_debug_rect:
+        draw_cell_rect(state.grid_state.debug_rect_tl, state.grid_state.debug_rect_br)
+
     rl.end_mode_2d()
 
     if state.dialog.active:
@@ -207,6 +210,19 @@ def draw_dialog(state: GameState) -> None:
         label_size,
         rl.RAYWHITE,
     )
+
+
+def draw_cell_rect(top_left, bottom_right) -> None:
+    """Draw a red outline rectangle spanning the given cells (inclusive).
+
+    `top_left` is the top-left corner cell and `bottom_right` is the
+    bottom-right corner cell; the rectangle covers the full cell footprint
+    from one to the other.
+    """
+    x, y = grid.cell_coords_to_top_left_pixel(top_left.x, top_left.y)
+    width = (bottom_right.x - top_left.x + 1) * CELL_SIZE
+    height = (bottom_right.y - top_left.y + 1) * CELL_SIZE
+    rl.draw_rectangle_lines_ex(rl.Rectangle(x, y, width, height), 2, rl.RED)
 
 
 def draw_grid() -> None:

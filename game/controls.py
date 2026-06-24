@@ -28,6 +28,8 @@ def handle_input(state: GameState) -> None:
     handle_mouse_click(gridstate, state.camera)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_P):
         gridstate.show_grid = not gridstate.show_grid
+    if rl.is_key_pressed(rl.KeyboardKey.KEY_SEMICOLON):
+        gridstate.show_debug_rect = not gridstate.show_debug_rect
     if rl.is_key_pressed(rl.KeyboardKey.KEY_S):
         cell = hover_cell(gridstate, state.camera)
         gridstate.toggle_source(cell.x, cell.y)
