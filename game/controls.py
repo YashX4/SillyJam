@@ -16,8 +16,10 @@ def handle_input(gridstate: GridState) -> None:
     handle_mouse_click(gridstate)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_P):
         gridstate.show_grid = not gridstate.show_grid
-
-
+    if rl.is_key_pressed(rl.KeyboardKey.KEY_C):
+        res = grid.connected_neighbors(gridstate, gridstate.curr_hovered_cell)
+        print("connected_neighbors = ", res)
+        
 def handle_mouse_click(gridstate: GridState) -> None:
     """Cycle the clicked cell's pipe sprite to the next frame in the enum."""
     if not rl.is_mouse_button_pressed(rl.MouseButton.MOUSE_BUTTON_LEFT):

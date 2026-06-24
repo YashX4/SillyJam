@@ -25,7 +25,7 @@ def pixel_to_cell(x: float, y: float) -> Cell:
     """Return the (col, row) of the cell containing the given pixel."""
     col = int(x // CELL_SIZE)
     row = int(y // CELL_SIZE)
-    return Cell(x=col, y=row, color=(0, 0, 0))
+    return Cell(x=col, y=row)
 
 
 def adjacent(cell_a: Cell, cell_b: Cell) -> bool:

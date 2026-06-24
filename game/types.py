@@ -79,5 +79,4 @@ class PipeSprite(IntEnum):
 class Cell:
     x: int
     y: int
-    color: tuple[int, int, int]
     pipe: PipeSprite = PipeSprite.AIR
