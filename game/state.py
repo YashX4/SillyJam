@@ -14,7 +14,7 @@ from game.dialog import DialogState
 from game.types import Cell, PipeSprite
 from game.sprite_data.parallax import ParallaxBackground
 from game.spritesheet import AnimatedSprite, FrameSprite, SpriteSheet
-from game.config import GRID_COLS, GRID_ROWS
+from game.config import BOILER_SPAN, GRID_COLS, GRID_ROWS
 
 
 class Scene(Enum):
@@ -37,14 +37,54 @@ class GridState:
         default_factory=lambda: [[Cell(x=x, y=y, pipe=PipeSprite.AIR) for x in range(GRID_COLS)] for y in range(GRID_ROWS)]
     )
     def set_pipe(self, col: int, row: int, new_pipe: PipeSprite) -> None:
-        """Set the pipe sprite of the cell at (col, row)."""
-        if grid.in_bounds(col, row):
+        """Set the pipe sprite of the cell at (col, row).
+
+        Cells covered by a boiler are reserved and cannot hold a pipe.
+        """
+        if grid.in_bounds(col, row) and not self.cell_in_boiler(col, row):
             self.grid[row][col].pipe = new_pipe
 
     def toggle_source(self, col: int, row: int) -> None:
-        """Toggle whether the cell at (col, row) is a source."""
-        if grid.in_bounds(col, row):
+        """Toggle whether the cell at (col, row) is a source.
+
+        Cells covered by a boiler are reserved and cannot be a source.
+        """
+        if grid.in_bounds(col, row) and not self.cell_in_boiler(col, row):
             self.grid[row][col].is_source = not self.grid[row][col].is_source
+
+    # Top-left (col, row) of each placed boiler. Each boiler spans BOILER_SPAN
+    # cells in both directions (a 2x2 block).
+    boilers: list[tuple[int, int]] = field(default_factory=list)
+
+    def cell_in_boiler(self, col: int, row: int) -> bool:
+        """True if (col, row) falls within any placed boiler's 2x2 footprint."""
+        for bcol, brow in self.boilers:
+            if bcol <= col < bcol + BOILER_SPAN and brow <= row < brow + BOILER_SPAN:
+                return True
+        return False
+
+    def place_boiler(self, col: int, row: int) -> bool:
+        """Place a boiler with (col, row) as its top-left cell.
+
+        Returns False if the 2x2 footprint would fall outside the grid, overlap
+        an existing boiler, or cover a cell that already holds a pipe or source.
+        """
+        if not (
+            grid.in_bounds(col, row)
+            and grid.in_bounds(col + BOILER_SPAN - 1, row + BOILER_SPAN - 1)
+        ):
+            return False
+        for r in range(row, row + BOILER_SPAN):
+            for c in range(col, col + BOILER_SPAN):
+                cell = self.grid[r][c]
+                if (
+                    self.cell_in_boiler(c, r)
+                    or cell.pipe is not PipeSprite.AIR
+                    or cell.is_source
+                ):
+                    return False
+        self.boilers.append((col, row))
+        return True
     
 @dataclass
 class GameState:
@@ -72,3 +112,4 @@ class GameState:
     water_pipe_sheet: SpriteSheet | None = None
     ballbot: FrameSprite | None = None
     pump_sprite: FrameSprite | None = None
+    boiler_sprite: FrameSprite | None = None

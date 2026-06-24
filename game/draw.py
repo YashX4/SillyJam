@@ -24,6 +24,9 @@ def draw(state: GameState, alpha: float) -> None:
     if state.pipe_sheet is not None:
         draw_pipes(state)
 
+    if state.boiler_sprite is not None:
+        draw_boilers(state)
+
     if state.sprite is not None:
         sprite_x = 40
         sprite_y = 40
@@ -65,6 +68,15 @@ def draw_pipes(state: GameState) -> None:
                 sheet = state.water_pipe_sheet
             if sheet is not None:
                 sheet.draw_frame(cell.pipe, x, y)
+
+
+def draw_boilers(state: GameState) -> None:
+    """Draw the animated boiler over its 2x2 footprint at each placed origin."""
+    for col, row in state.grid_state.boilers:
+        x, y = grid.cell_coords_to_top_left_pixel(col, row)
+        # The boiler texture is 64x64 == 2x2 cells, so scale 1.0 fits exactly.
+        if state.boiler_sprite is not None:
+            state.boiler_sprite.draw(x, y)
 
 
 def draw_sources(state: GameState) -> None:

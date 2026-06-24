@@ -14,6 +14,9 @@ GRID_ROWS = 100
 WORLD_WIDTH = GRID_COLS * CELL_SIZE
 WORLD_HEIGHT = GRID_ROWS * CELL_SIZE
 
+# A boiler's 64x64 sprite spans this many cells in each direction (2x2 footprint).
+BOILER_SPAN = 2
+
 # Camera pan/zoom limits.
 CAMERA_PAN_SPEED = 600.0  # pixels per second (in world units, before zoom)
 CAMERA_ZOOM_MIN = 0.25

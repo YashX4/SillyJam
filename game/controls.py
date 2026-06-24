@@ -28,6 +28,9 @@ def handle_input(state: GameState) -> None:
     if rl.is_key_pressed(rl.KeyboardKey.KEY_S):
         cell = hover_cell(gridstate, state.camera)
         gridstate.toggle_source(cell.x, cell.y)
+    if rl.is_key_pressed(rl.KeyboardKey.KEY_B):
+        cell = hover_cell(gridstate, state.camera)
+        gridstate.place_boiler(cell.x, cell.y)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_C):
         hcell = hover_cell(gridstate, state.camera)
         print("hover_cell = ", hcell)
@@ -81,6 +84,10 @@ def handle_mouse_click(gridstate: GridState, camera: rl.Camera2D) -> None:
 
     cell = hover_cell(gridstate, camera)
     if not (0 <= cell.x < GRID_COLS and 0 <= cell.y < GRID_ROWS):
+        return
+
+    # Cells under a boiler are reserved; don't place pipes there.
+    if gridstate.cell_in_boiler(cell.x, cell.y):
         return
 
     current_pipe = gridstate.grid[cell.y][cell.x].pipe
