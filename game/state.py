@@ -163,3 +163,4 @@ class GameState:
     # rl.Music is a cffi factory (not a class), so it can't go in a `| None`
     # union that's evaluated at class definition; quote it as a forward ref.
     music: "rl.Music | None" = None
+    robot_talk: "rl.Sound | None" = None

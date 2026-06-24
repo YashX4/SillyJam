@@ -32,6 +32,7 @@ async def run() -> None:
 
     state = GameState()
     state.music = audio.load_music()
+    state.robot_talk = audio.load_robot_talk()
     state.background = parallax.load_background()
     state.sprite = demo_sprite.load_demo_sprite()
     state.pipe_sheet = pipes.load_pipe_sheet()
@@ -80,7 +81,9 @@ async def run() -> None:
 
         if state.dialog.active:
             # Dialog is modal: only advancing input, no grid interaction.
-            dialog.handle_dialog_input(state.dialog, ignore_keys=DIALOG_OPEN_KEYS)
+            advanced = dialog.handle_dialog_input(state.dialog, ignore_keys=DIALOG_OPEN_KEYS)
+            if advanced and state.robot_talk is not None:
+                rl.play_sound(state.robot_talk)
             if state.ballbot is not None:
                 state.ballbot.update(rl.get_frame_time())
         else:
@@ -127,5 +130,7 @@ async def run() -> None:
         state.selection_sprite.unload()
     if state.music is not None:
         audio.unload_music(state.music)
+    if state.robot_talk is not None:
+        audio.unload_sound(state.robot_talk)
     rl.close_audio_device()
     rl.close_window()

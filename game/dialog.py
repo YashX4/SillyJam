@@ -90,12 +90,18 @@ class DialogState:
     def is_last(self) -> bool:
         return self.index >= len(self.sentences) - 1
 
-    def advance(self) -> None:
-        """Move to the next sentence, or close the dialog if past the end."""
+    def advance(self) -> bool:
+        """Move to the next sentence, or close the dialog if past the end.
+
+        Returns True if a new sentence is now showing, False if the dialog
+        just closed (so callers can play the talk blip only on a real advance).
+        """
         self.index += 1
         if self.index >= len(self.sentences):
             self.active = False
             self.index = 0
+            return False
+        return True
 
 
 def _point_in_next_button(pos: rl.Vector2, layout: DialogLayout) -> bool:
@@ -105,11 +111,14 @@ def _point_in_next_button(pos: rl.Vector2, layout: DialogLayout) -> bool:
     )
 
 
-def handle_dialog_input(dialog: DialogState, ignore_keys: tuple[int, ...] = ()) -> None:
+def handle_dialog_input(dialog: DialogState, ignore_keys: tuple[int, ...] = ()) -> bool:
     """Advance the dialog on a Next-button click or any key press.
 
     `ignore_keys` are skipped so the key that opened the dialog this frame does
     not also advance it.
+
+    Returns True when the input advanced the dialog to a new sentence (so the
+    caller can play the talk blip), False otherwise.
     """
     advance = False
 
@@ -125,4 +134,5 @@ def handle_dialog_input(dialog: DialogState, ignore_keys: tuple[int, ...] = ()) 
             advance = True
 
     if advance:
-        dialog.advance()
+        return dialog.advance()
+    return False

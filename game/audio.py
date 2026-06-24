@@ -12,6 +12,7 @@ context, just like textures need a GL context).
 import pyray as rl
 
 _MUSIC_PATH = "assets/sound/music/Empty_Streets.ogg"
+_ROBOT_TALK_PATH = "assets/sound/effects/robot_talk_Sequence_03.ogg"
 
 
 def load_music() -> rl.Music:
@@ -30,3 +31,16 @@ def update_music(music: rl.Music) -> None:
 def unload_music(music: rl.Music) -> None:
     rl.stop_music_stream(music)
     rl.unload_music_stream(music)
+
+
+def load_robot_talk() -> rl.Sound:
+    """Load the short blip played when the dialog advances a line.
+
+    Unlike the music this is a fully-decoded Sound (cheap, fire-and-forget),
+    so it can be replayed on demand without streaming.
+    """
+    return rl.load_sound(_ROBOT_TALK_PATH)
+
+
+def unload_sound(sound: rl.Sound) -> None:
+    rl.unload_sound(sound)
