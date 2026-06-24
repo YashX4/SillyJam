@@ -16,6 +16,10 @@ def handle_input(gridstate: GridState) -> None:
     handle_mouse_click(gridstate)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_P):
         gridstate.show_grid = not gridstate.show_grid
+    if rl.is_key_pressed(rl.KeyboardKey.KEY_S):
+        mouse_pos = rl.get_mouse_position()
+        cell = gridstate.get_hover_cell(mouse_pos.x, mouse_pos.y)
+        gridstate.toggle_source(cell.x, cell.y)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_C):
         mouse_pos = rl.get_mouse_position()
         hover_cell = gridstate.get_hover_cell(mouse_pos.x, mouse_pos.y)

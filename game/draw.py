@@ -25,6 +25,7 @@ def draw(state: GameState, alpha: float) -> None:
         xPos, yPos = grid.cell_to_px(hover_cell)
         rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
         draw_grid()
+        draw_sources(state)
 
     FPS_TEXT_POS_X = VIEWPORT_WIDTH - 90
     FPS_TEXT_POS_Y = 10
@@ -41,6 +42,18 @@ def draw_pipes(state: GameState) -> None:
             x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
             if state.pipe_sheet is not None:
                 state.pipe_sheet.draw_frame(cell.pipe, x, y)
+
+
+def draw_sources(state: GameState) -> None:
+    """Draw a small blue square in each source cell (debug overlay)."""
+    SQUARE_SIZE = CELL_SIZE // 4
+    offset = (CELL_SIZE - SQUARE_SIZE) // 2
+    for row_num, row in enumerate(state.grid_state.grid):
+        for col_num, cell in enumerate(row):
+            if not cell.is_source:
+                continue
+            x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
+            rl.draw_rectangle(x + offset, y + offset, SQUARE_SIZE, SQUARE_SIZE, rl.BLUE)
 
 
 def draw_grid() -> None:

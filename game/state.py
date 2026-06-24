@@ -31,6 +31,11 @@ class GridState:
         """Set the pipe sprite of the cell at (col, row)."""
         if grid.in_bounds(col, row):
             self.grid[row][col].pipe = new_pipe
+
+    def toggle_source(self, col: int, row: int) -> None:
+        """Toggle whether the cell at (col, row) is a source."""
+        if grid.in_bounds(col, row):
+            self.grid[row][col].is_source = not self.grid[row][col].is_source
     
 @dataclass
 class GameState:
