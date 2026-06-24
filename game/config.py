@@ -20,6 +20,13 @@ BOILER_SPAN = 2
 # A gear, like a boiler, covers a 2x2 block of cells.
 GEAR_SPAN = 2
 
+# Gear animation rate (frames per second): the value it starts at, how much the
+# z/x keys nudge it per press, and the range it's clamped to.
+GEAR_FPS_DEFAULT = 12.0
+GEAR_FPS_STEP = 1.0
+GEAR_FPS_MIN = 0.0
+GEAR_FPS_MAX = 50.0
+
 # How fast a boiler heats up, in heat units per second, and the cap it climbs to.
 BOILER_HEAT_RATE = 1.0
 BOILER_HEAT_MAX = 500.0

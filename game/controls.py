@@ -11,6 +11,9 @@ from game.config import (
     CAMERA_ZOOM_MAX,
     CAMERA_ZOOM_MIN,
     CAMERA_ZOOM_STEP,
+    GEAR_FPS_MAX,
+    GEAR_FPS_MIN,
+    GEAR_FPS_STEP,
     GRID_COLS,
     GRID_ROWS,
 )
@@ -34,12 +37,25 @@ def handle_input(state: GameState) -> None:
     if rl.is_key_pressed(rl.KeyboardKey.KEY_M):
         cell = hover_cell(gridstate, state.camera)
         gridstate.place_gear(cell.x, cell.y)
+    if rl.is_key_pressed(rl.KeyboardKey.KEY_Z):
+        adjust_gear_fps(state, -GEAR_FPS_STEP)
+    if rl.is_key_pressed(rl.KeyboardKey.KEY_X):
+        adjust_gear_fps(state, GEAR_FPS_STEP)
     if rl.is_key_pressed(rl.KeyboardKey.KEY_C):
         hcell = hover_cell(gridstate, state.camera)
         print("hover_cell = ", hcell)
         if hcell.pipe != PipeSprite.AIR:
             res = grid.connected_neighbors(gridstate, hcell)
             print("connected_neighbors = ", res)
+
+
+def adjust_gear_fps(state: GameState, delta: float) -> None:
+    """Change the gear animation rate by `delta` fps (clamped to range) and print it."""
+    if state.gear_sprite is None:
+        return
+    new_fps = state.gear_sprite.fps + delta
+    state.gear_sprite.fps = max(GEAR_FPS_MIN, min(GEAR_FPS_MAX, new_fps))
+    print("gear fps =", state.gear_sprite.fps)
 
 
 def mouse_world_pos(camera: rl.Camera2D) -> rl.Vector2:
