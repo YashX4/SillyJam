@@ -8,7 +8,8 @@ import os
 
 import pyray as rl
 
-from game import controls, draw, physics
+from game import controls, draw, menu, physics
+from game.menu import MenuAction
 from game.sprite_data import demo_sprite, pipes
 from game.config import (
     MAX_FRAME_TIME,
@@ -18,7 +19,7 @@ from game.config import (
     TARGET_FPS,
     WINDOW_TITLE,
 )
-from game.state import GameState
+from game.state import GameState, Scene
 
 
 async def run() -> None:
@@ -34,6 +35,18 @@ async def run() -> None:
     dt_accumulator = 0.0
 
     while not rl.window_should_close():
+
+        if state.scene is Scene.MENU:
+            action = menu.handle_menu_input()
+            if action is MenuAction.NEW_GAME:
+                state.scene = Scene.PLAYING
+            elif action is MenuAction.EXIT:
+                break
+            # LOAD_GAME and SETTINGS are not wired up yet.
+
+            menu.draw_menu()
+            await asyncio.sleep(0)
+            continue
 
         controls.handle_input(state.grid_state)
 

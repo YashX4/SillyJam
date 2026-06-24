@@ -81,3 +81,4 @@ class Cell:
     y: int
     pipe: PipeSprite = PipeSprite.AIR
     is_source: bool = False
+    has_flow: bool = False

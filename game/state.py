@@ -5,6 +5,7 @@ Mutable game state.
 """
 
 from dataclasses import dataclass, field
+from enum import Enum, auto
 
 from game import grid
 from game.types import Cell, PipeSprite
@@ -13,6 +14,13 @@ from game.config import GRID_COLS, GRID_ROWS
 
 INITIAL_X = 400.0
 INITIAL_Y = 225.0
+
+
+class Scene(Enum):
+    """Which top-level screen the game is currently showing."""
+
+    MENU = auto()
+    PLAYING = auto()
     
 @dataclass
 class GridState:
@@ -40,6 +48,7 @@ class GridState:
 @dataclass
 class GameState:
 
+    scene: Scene = Scene.MENU
     grid_state: GridState = field(default_factory=GridState)
 
     # Loaded after init_window (needs a GL context), so they start as None.
