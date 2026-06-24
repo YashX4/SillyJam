@@ -17,6 +17,9 @@ WORLD_HEIGHT = GRID_ROWS * CELL_SIZE
 # A boiler's 64x64 sprite spans this many cells in each direction (2x2 footprint).
 BOILER_SPAN = 2
 
+# A gear, like a boiler, covers a 2x2 block of cells.
+GEAR_SPAN = 2
+
 # How fast a boiler heats up, in heat units per second, and the cap it climbs to.
 BOILER_HEAT_RATE = 1.0
 BOILER_HEAT_MAX = 500.0

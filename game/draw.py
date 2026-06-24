@@ -3,6 +3,7 @@ import pyray as rl
 from game import dialog, grid
 from game.config import (
     CELL_SIZE,
+    GEAR_SPAN,
     WORLD_WIDTH,
     WORLD_HEIGHT,
 )
@@ -26,6 +27,9 @@ def draw(state: GameState, alpha: float) -> None:
 
     if state.boiler_sprite is not None:
         draw_boilers(state)
+
+    if state.gear_sprite is not None:
+        draw_gears(state)
 
     if state.sprite is not None:
         sprite_x = 40
@@ -97,6 +101,18 @@ def draw_boilers(state: GameState) -> None:
             HEAT_FONT_SIZE,
             rl.WHITE,
         )
+
+
+def draw_gears(state: GameState) -> None:
+    """Draw the animated gear over its 2x2 footprint at each placed origin."""
+    sprite = state.gear_sprite
+    if sprite is None:
+        return
+    # Frames are 40x40; scale them up to fill the 2x2 (CELL_SIZE*GEAR_SPAN) block.
+    scale = (CELL_SIZE * GEAR_SPAN) / sprite.sheet.frame_width
+    for gear in state.grid_state.gears:
+        x, y = grid.cell_coords_to_top_left_pixel(gear.col, gear.row)
+        sprite.draw(x, y, scale=scale)
 
 
 def draw_sources(state: GameState) -> None:

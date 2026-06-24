@@ -98,3 +98,11 @@ class Boiler:
     col: int
     row: int
     heat: float = 0.0
+
+
+@dataclass
+class Gear:
+    """A placed gear. (col, row) is its top-left cell; it spans a 2x2 block."""
+
+    col: int
+    row: int
