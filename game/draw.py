@@ -87,6 +87,16 @@ def draw_boilers(state: GameState) -> None:
         # The boiler texture is 64x64 == 2x2 cells, so scale 1.0 fits exactly.
         if state.boiler_sprite is not None:
             state.boiler_sprite.draw(x, y)
+        # Heat readout in the boiler's top-left cell.
+        HEAT_FONT_SIZE = 16
+        HEAT_PAD = 2
+        rl.draw_text(
+            str(int(boiler.heat)),
+            x + HEAT_PAD,
+            y + HEAT_PAD,
+            HEAT_FONT_SIZE,
+            rl.WHITE,
+        )
 
 
 def draw_sources(state: GameState) -> None:
