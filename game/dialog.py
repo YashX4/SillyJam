@@ -10,31 +10,62 @@ from dataclasses import dataclass, field
 
 import pyray as rl
 
-from game.config import VIEWPORT_WIDTH, VIEWPORT_HEIGHT
 from game.sprite_data.ballbot import BALLBOT_FRAME_WIDTH, BALLBOT_FRAME_HEIGHT
 
-# --- Layout (shared by draw + input hit-testing) --------------------------
+# --- Fixed layout pieces (screen-size independent) ------------------------
 MARGIN = 16
 BOX_HEIGHT = 120
-BOX_Y = VIEWPORT_HEIGHT - BOX_HEIGHT - MARGIN
 
 BALLBOT_SCALE = 3.0
 BALLBOT_W = int(BALLBOT_FRAME_WIDTH * BALLBOT_SCALE)
 BALLBOT_H = int(BALLBOT_FRAME_HEIGHT * BALLBOT_SCALE)
 BALLBOT_X = MARGIN
-# Sit the ballbot on the bottom edge of the dialog box (left side of screen).
-BALLBOT_Y = BOX_Y + BOX_HEIGHT - BALLBOT_H
-
-BOX_X = MARGIN + BALLBOT_W + 12
-BOX_W = VIEWPORT_WIDTH - BOX_X - MARGIN
 
 TEXT_PADDING = 14
 TEXT_FONT_SIZE = 18
 
 NEXT_BTN_W = 90
 NEXT_BTN_H = 30
-NEXT_BTN_X = BOX_X + BOX_W - NEXT_BTN_W - 12
-NEXT_BTN_Y = BOX_Y + BOX_HEIGHT - NEXT_BTN_H - 12
+
+
+@dataclass(frozen=True)
+class DialogLayout:
+    """Screen-size-dependent positions, recomputed each frame.
+
+    The dialog anchors to the bottom edge of the *current* window (which may be
+    larger than the design viewport), so it must be derived from the live
+    screen size rather than baked-in viewport constants.
+    """
+
+    box_x: int
+    box_y: int
+    box_w: int
+    box_h: int
+    ballbot_x: int
+    ballbot_y: int
+    next_btn_x: int
+    next_btn_y: int
+
+
+def compute_layout() -> DialogLayout:
+    """Lay the dialog out against the current window dimensions."""
+    screen_w = rl.get_screen_width()
+    screen_h = rl.get_screen_height()
+
+    box_y = screen_h - BOX_HEIGHT - MARGIN
+    box_x = MARGIN + BALLBOT_W + 12
+    box_w = screen_w - box_x - MARGIN
+    return DialogLayout(
+        box_x=box_x,
+        box_y=box_y,
+        box_w=box_w,
+        box_h=BOX_HEIGHT,
+        ballbot_x=BALLBOT_X,
+        # Sit the ballbot on the bottom edge of the dialog box.
+        ballbot_y=box_y + BOX_HEIGHT - BALLBOT_H,
+        next_btn_x=box_x + box_w - NEXT_BTN_W - 12,
+        next_btn_y=box_y + BOX_HEIGHT - NEXT_BTN_H - 12,
+    )
 
 
 @dataclass
@@ -67,10 +98,10 @@ class DialogState:
             self.index = 0
 
 
-def _point_in_next_button(pos: rl.Vector2) -> bool:
+def _point_in_next_button(pos: rl.Vector2, layout: DialogLayout) -> bool:
     return (
-        NEXT_BTN_X <= pos.x <= NEXT_BTN_X + NEXT_BTN_W
-        and NEXT_BTN_Y <= pos.y <= NEXT_BTN_Y + NEXT_BTN_H
+        layout.next_btn_x <= pos.x <= layout.next_btn_x + NEXT_BTN_W
+        and layout.next_btn_y <= pos.y <= layout.next_btn_y + NEXT_BTN_H
     )
 
 
@@ -90,7 +121,7 @@ def handle_dialog_input(dialog: DialogState, ignore_keys: tuple[int, ...] = ()) 
         key = rl.get_key_pressed()
 
     if rl.is_mouse_button_pressed(rl.MouseButton.MOUSE_BUTTON_LEFT):
-        if _point_in_next_button(rl.get_mouse_position()):
+        if _point_in_next_button(rl.get_mouse_position(), compute_layout()):
             advance = True
 
     if advance:

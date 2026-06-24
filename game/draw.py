@@ -3,8 +3,6 @@ import pyray as rl
 from game import dialog, grid
 from game.config import (
     CELL_SIZE,
-    VIEWPORT_WIDTH,
-    VIEWPORT_HEIGHT,
     WORLD_WIDTH,
     WORLD_HEIGHT,
 )
@@ -45,7 +43,7 @@ def draw(state: GameState, alpha: float) -> None:
     if state.dialog.active:
         draw_dialog(state)
 
-    FPS_TEXT_POS_X = VIEWPORT_WIDTH - 90
+    FPS_TEXT_POS_X = rl.get_screen_width() - 90
     FPS_TEXT_POS_Y = 10
     rl.draw_fps(FPS_TEXT_POS_X, FPS_TEXT_POS_Y)
     rl.end_drawing()
@@ -108,25 +106,29 @@ def _wrap_text(text: str, font_size: int, max_width: int) -> list[str]:
 
 def draw_dialog(state: GameState) -> None:
     """Draw the modal bottom dialog: dim overlay, ballbot, text box, Next button."""
+    layout = dialog.compute_layout()
+
     # Dim the rest of the screen to signal it's non-interactive.
-    rl.draw_rectangle(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, rl.Color(0, 0, 0, 90))
+    rl.draw_rectangle(
+        0, 0, rl.get_screen_width(), rl.get_screen_height(), rl.Color(0, 0, 0, 90)
+    )
 
     # Animated ballbot speaker on the left.
     if state.ballbot is not None:
-        state.ballbot.draw(dialog.BALLBOT_X, dialog.BALLBOT_Y, scale=dialog.BALLBOT_SCALE)
+        state.ballbot.draw(layout.ballbot_x, layout.ballbot_y, scale=dialog.BALLBOT_SCALE)
 
     # Dialog box.
     rl.draw_rectangle(
-        dialog.BOX_X, dialog.BOX_Y, dialog.BOX_W, dialog.BOX_HEIGHT, rl.Color(20, 20, 30, 235)
+        layout.box_x, layout.box_y, layout.box_w, layout.box_h, rl.Color(20, 20, 30, 235)
     )
     rl.draw_rectangle_lines(
-        dialog.BOX_X, dialog.BOX_Y, dialog.BOX_W, dialog.BOX_HEIGHT, rl.RAYWHITE
+        layout.box_x, layout.box_y, layout.box_w, layout.box_h, rl.RAYWHITE
     )
 
     # Wrapped sentence text.
-    text_x = dialog.BOX_X + dialog.TEXT_PADDING
-    text_y = dialog.BOX_Y + dialog.TEXT_PADDING
-    max_text_width = dialog.BOX_W - 2 * dialog.TEXT_PADDING
+    text_x = layout.box_x + dialog.TEXT_PADDING
+    text_y = layout.box_y + dialog.TEXT_PADDING
+    max_text_width = layout.box_w - 2 * dialog.TEXT_PADDING
     line_height = dialog.TEXT_FONT_SIZE + 6
     for i, line in enumerate(_wrap_text(state.dialog.current(), dialog.TEXT_FONT_SIZE, max_text_width)):
         rl.draw_text(line, text_x, text_y + i * line_height, dialog.TEXT_FONT_SIZE, rl.RAYWHITE)
@@ -134,23 +136,23 @@ def draw_dialog(state: GameState) -> None:
     # Next / Close button.
     mouse = rl.get_mouse_position()
     hovered = (
-        dialog.NEXT_BTN_X <= mouse.x <= dialog.NEXT_BTN_X + dialog.NEXT_BTN_W
-        and dialog.NEXT_BTN_Y <= mouse.y <= dialog.NEXT_BTN_Y + dialog.NEXT_BTN_H
+        layout.next_btn_x <= mouse.x <= layout.next_btn_x + dialog.NEXT_BTN_W
+        and layout.next_btn_y <= mouse.y <= layout.next_btn_y + dialog.NEXT_BTN_H
     )
     btn_color = rl.Color(90, 110, 160, 255) if hovered else rl.Color(60, 75, 120, 255)
     rl.draw_rectangle(
-        dialog.NEXT_BTN_X, dialog.NEXT_BTN_Y, dialog.NEXT_BTN_W, dialog.NEXT_BTN_H, btn_color
+        layout.next_btn_x, layout.next_btn_y, dialog.NEXT_BTN_W, dialog.NEXT_BTN_H, btn_color
     )
     rl.draw_rectangle_lines(
-        dialog.NEXT_BTN_X, dialog.NEXT_BTN_Y, dialog.NEXT_BTN_W, dialog.NEXT_BTN_H, rl.RAYWHITE
+        layout.next_btn_x, layout.next_btn_y, dialog.NEXT_BTN_W, dialog.NEXT_BTN_H, rl.RAYWHITE
     )
     label = "Close" if state.dialog.is_last() else "Next"
     label_size = 18
     label_w = rl.measure_text(label, label_size)
     rl.draw_text(
         label,
-        dialog.NEXT_BTN_X + (dialog.NEXT_BTN_W - label_w) // 2,
-        dialog.NEXT_BTN_Y + (dialog.NEXT_BTN_H - label_size) // 2,
+        layout.next_btn_x + (dialog.NEXT_BTN_W - label_w) // 2,
+        layout.next_btn_y + (dialog.NEXT_BTN_H - label_size) // 2,
         label_size,
         rl.RAYWHITE,
     )
