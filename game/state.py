@@ -177,3 +177,4 @@ class GameState:
     # union that's evaluated at class definition; quote it as a forward ref.
     music: "rl.Music | None" = None
     robot_talk: "rl.Sound | None" = None
+    robot_dialog_opens: "rl.Sound | None" = None

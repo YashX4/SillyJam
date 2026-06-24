@@ -13,6 +13,7 @@ import pyray as rl
 
 _MUSIC_PATH = "assets/sound/music/Empty_Streets.ogg"
 _ROBOT_TALK_PATH = "assets/sound/effects/robot_talk_Sequence_03.ogg"
+_ROBOT_DIALOG_OPENS_PATH = "assets/sound/effects/robot_dialog_opens_Data_Point_04.ogg"
 
 
 def load_music() -> rl.Music:
@@ -40,6 +41,11 @@ def load_robot_talk() -> rl.Sound:
     so it can be replayed on demand without streaming.
     """
     return rl.load_sound(_ROBOT_TALK_PATH)
+
+
+def load_robot_dialog_opens() -> rl.Sound:
+    """Load the chime played when the dialog box opens and closes."""
+    return rl.load_sound(_ROBOT_DIALOG_OPENS_PATH)
 
 
 def unload_sound(sound: rl.Sound) -> None:

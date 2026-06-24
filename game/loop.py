@@ -33,6 +33,7 @@ async def run() -> None:
     state = GameState()
     state.music = audio.load_music()
     state.robot_talk = audio.load_robot_talk()
+    state.robot_dialog_opens = audio.load_robot_dialog_opens()
     state.background = parallax.load_background()
     state.sprite = demo_sprite.load_demo_sprite()
     state.pipe_sheet = pipes.load_pipe_sheet()
@@ -74,16 +75,24 @@ async def run() -> None:
             continue
 
         # Open the test dialogs (allowed even while one is showing).
+        was_active = state.dialog.active
         if rl.is_key_pressed(rl.KeyboardKey.KEY_LEFT_BRACKET):
             state.dialog.open(TEST_DIALOG_LONG)
         if rl.is_key_pressed(rl.KeyboardKey.KEY_RIGHT_BRACKET):
             state.dialog.open(TEST_DIALOG_SHORT)
+
+        # Chime on the inactive->active transition (the box opening).
+        if not was_active and state.dialog.active and state.robot_dialog_opens is not None:
+            rl.play_sound(state.robot_dialog_opens)
 
         if state.dialog.active:
             # Dialog is modal: only advancing input, no grid interaction.
             advanced = dialog.handle_dialog_input(state.dialog, ignore_keys=DIALOG_OPEN_KEYS)
             if advanced and state.robot_talk is not None:
                 rl.play_sound(state.robot_talk)
+            # Advancing past the last line closes the box; chime on that too.
+            if not state.dialog.active and state.robot_dialog_opens is not None:
+                rl.play_sound(state.robot_dialog_opens)
             if state.ballbot is not None:
                 state.ballbot.update(rl.get_frame_time())
         else:
@@ -132,5 +141,7 @@ async def run() -> None:
         audio.unload_music(state.music)
     if state.robot_talk is not None:
         audio.unload_sound(state.robot_talk)
+    if state.robot_dialog_opens is not None:
+        audio.unload_sound(state.robot_dialog_opens)
     rl.close_audio_device()
     rl.close_window()
