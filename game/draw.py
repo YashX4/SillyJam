@@ -32,14 +32,13 @@ def draw(state: GameState, alpha: float) -> None:
 
 def draw_pipes(state: GameState) -> None:
     """Draw each cell's pipe sprite."""
-    for row, cells in enumerate(state.grid_state.grid):
-        for col, pipe_value in enumerate(cells):
-            pipe = PipeSprite(pipe_value)
-            if pipe is PipeSprite.AIR:
+    for  row_num, row in enumerate(state.grid_state.grid):
+        for col_num, cell in enumerate(row):
+            if cell.pipe is PipeSprite.AIR:
                 continue
-            x, y = grid.cell_coords_to_top_left_pixel(col, row)
+            x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
             if state.pipe_sheet is not None:
-                state.pipe_sheet.draw_frame(pipe, x, y)
+                state.pipe_sheet.draw_frame(cell.pipe, x, y)
 
 
 def draw_grid() -> None:

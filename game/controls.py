@@ -27,8 +27,10 @@ def handle_mouse_click(gridstate: GridState) -> None:
     if not (0 <= cell.x < GRID_COLS and 0 <= cell.y < GRID_ROWS):
         return
 
-    current = PipeSprite(gridstate.grid[cell.y][cell.x])
-    gridstate.grid[cell.y][cell.x] = current.next().value
+    current_pipe = gridstate.grid[cell.y][cell.x].pipe
+    next_pipe: PipeSprite = current_pipe.next()
+    
+    gridstate.set_pipe(cell.x, cell.y, next_pipe)
 
 def handle_mouse_move(gridstate: GridState) -> None:
     """Update the state.x and state.y based on the mouse position."""

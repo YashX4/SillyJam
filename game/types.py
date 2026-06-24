@@ -15,25 +15,16 @@ class Direction(Enum):
     WEST = (-1, 0)
 
     @property
-    def dx(self) -> int:
+    def dir_x(self) -> int:
         return self.value[0]
 
     @property
-    def dy(self) -> int:
+    def dir_y(self) -> int:
         return self.value[1]
 
     @property
     def opposite(self) -> "Direction":
-        return Direction((-self.dx, -self.dy))
-
-    @classmethod
-    def from_delta(cls, dx: int, dy: int) -> "Direction | None":
-        """The direction matching this step, or None if it isn't one cell
-        orthogonally (diagonals, zero, or jumps > 1 all return None)."""
-        try:
-            return cls((dx, dy))
-        except ValueError:
-            return None
+        return Direction((-self.dir_x, -self.dir_y))
 
 
 class PipeSprite(IntEnum):
@@ -91,4 +82,4 @@ class Cell:
     x: int
     y: int
     color: tuple[int, int, int]
-    pipe_sprite: PipeSprite = PipeSprite.AIR
+    pipe: PipeSprite = PipeSprite.AIR
