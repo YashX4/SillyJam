@@ -8,7 +8,7 @@ import os
 
 import pyray as rl
 
-from game import controls, dialog, draw, menu, physics
+from game import audio, controls, dialog, draw, menu, physics
 from game.menu import MenuAction
 from game.sprite_data import ballbot, boiler, demo_sprite, gear, parallax, pipes, selection
 from game.config import (
@@ -28,8 +28,10 @@ async def run() -> None:
 
     rl.init_window(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, WINDOW_TITLE)
     rl.set_target_fps(TARGET_FPS)
+    rl.init_audio_device()
 
     state = GameState()
+    state.music = audio.load_music()
     state.background = parallax.load_background()
     state.sprite = demo_sprite.load_demo_sprite()
     state.pipe_sheet = pipes.load_pipe_sheet()
@@ -54,6 +56,9 @@ async def run() -> None:
     )
 
     while not rl.window_should_close():
+
+        if state.music is not None:
+            audio.update_music(state.music)
 
         if state.scene is Scene.MENU:
             action = menu.handle_menu_input()
@@ -120,4 +125,7 @@ async def run() -> None:
         state.gear_sprite.unload()
     if state.selection_sprite is not None:
         state.selection_sprite.unload()
+    if state.music is not None:
+        audio.unload_music(state.music)
+    rl.close_audio_device()
     rl.close_window()

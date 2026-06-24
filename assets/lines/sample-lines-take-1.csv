@@ -1,0 +1,51 @@
+Line Number,Condition,Line content
+1,Game starts,Welcome to your first day on the job!
+2,Line 1 fires,"You, yes YOU(!) are now in control of the FATE OF THE WORLD."
+3,Line 2 fires,Isn't that exciting? So glad you answered the Craigslist ad.
+4,Line 3 fires,"Before we get into some real fun, let's learn the basics."
+5,Line 4 fires,"After all, experience was in no way a prerequisite. Your pay will reflect that hahaha"
+6,Line 5 fires,I'm not kidding. 
+7,Line 6 fires,It's just kinda that we're a bit understaffed...what with the AI that used to be running this place went all hallucinatory and doomsday-y. 
+8,Line 7 fires,But we'd already fired all the humans as a cost-saving measure. So lucky you! You're candidate #1.
+9,Line 8 fires,We set a low bar here hahahahahahahaha
+10,Line 9 fires,...
+11,Line 10 fires,"Listen up, it's real simple: "
+12,Line 11 fires,Spin the WHEEL OF POWER. It creates POWER. Power runs the machines the world needs to survive.
+13,Line 12 fires,"So, far, so good?"
+14,Line 13 fires,You can build up more power faster by buying GENERATORS and building up CLICKING POWER. 
+15,Line 14 fires,But make sure you have enough PIPES as you go to pump heat away and prevent a meltdown.
+16,Line 15 fires,Rotate elements so they align [mechanics specifics]. And remember: all of this costs money to run!
+17,Line 16 fires,"As you excel at your new role, you can add new towns to the network and continue providing sweet sweet electric excellence to our customers."
+18,Line 17 fires,"Alternatively, you could fail and poison the drinking water for entire metropolitan areas. "
+19,Line 18 fires,"And before you ask, I'm not any kind of automation system. Nah. I'm just here for moral support! You'rrreee welcome!"
+20,Line 19 fires,Are ya ready?
+21,Line 20 fires,"Just kidding, it doesn't matter! Let's get this show on the road!"
+22,Light failure,"Aw, don't worry about that! Yet!"
+23,Light failure,I believe in you! (I'm automated to say that.)
+24,Light failure,I'm sure you're doing your absolute best. Which I'm also a little afraid you are.
+25,Light failure,Consider my high hopes lowered.
+26,Light failure,"Guess ya get what you pay for, huh?"
+27,Light failure,Don't worry about it! The evil AI was still wayyy worse than you.
+28,Light failure,Maybe we should require some experience on the next Craigslist ad...
+29,Light failure,You'll pick it up! Maybe!
+30,Light failure,"I mean, I guess there's always a learning curve..."
+31,Light failure,Is it getting hot in here?
+32,Moderate failure,"You do know that poisoning local water supplies is a crime? I mean, at least theoretically. "
+33,Moderate failure,You can turn this around! For sure! Please!
+34,Moderate failure,Not sayinig you're not amazing at this but...please be careful.
+35,Moderate failure,Maybe we should rethink the automated training system...
+36,Moderate failure,"Good thing I don't have a bit of my stomach, or that's where my heart would be!"
+37,Moderate failure,My anxiety meter is only moderately freaking out.
+38,Moderate failure,I think I can confidently quantify this as BAD.
+39,Moderate failure,Who's worried? Not me! For sure!
+40,Moderate failure,That temperature sure is climbing...
+41,Serious failure,Danger Will Robinson!
+42,Serious failure,Well. That sure seems bad. 
+43,Serious failure,Now that's what I call a BIG oopsy. 
+44,Serious failure,"Now, don't panic...Or do. Panicking seems appropriate. "
+45,Serious failure,"Ooph. You're doing a pretty horrific job, huh?"
+46,Serious failure,Aghhh we're definitely getting sued. 
+47,Full failure,It's too hot! We're at max temp here before she blows!
+48,Endstate: Fail,"Wow, that sure was a nice world while we had it...Good thing there's a planet B!"
+49,Line 48 fires,Wait what...? I thought...Oh.
+50,Line 49 fires,"Well, shoot"
