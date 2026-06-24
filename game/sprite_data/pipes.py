@@ -8,7 +8,7 @@ and index them directly by a cell's pipe_sprite value.
 
 from game.spritesheet import SpriteSheet
 
-PIPES_SHEET_PATH = "assets/images/Pipes.png"
+PIPES_SHEET_PATH = "assets/images/pipes_with_air_space.png"
 PIPES_FRAME_SIZE = 32
 PIPES_COLUMNS = 15
 PIPES_FRAME_COUNT = 15  # one full row, matching PipeSprite (0..14)
