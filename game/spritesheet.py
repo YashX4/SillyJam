@@ -96,3 +96,39 @@ class AnimatedSprite:
 
     def unload(self) -> None:
         self.sheet.unload()
+
+
+@dataclass
+class FrameSprite:
+    """Plays through a list of separately-loaded textures at a fixed rate.
+
+    Unlike AnimatedSprite (one sheet sliced into frames), each frame here is its
+    own texture file. Useful for assets shipped as individual images.
+    """
+
+    textures: list[rl.Texture]
+    fps: float = 10.0
+    elapsed: float = 0.0
+    frame: int = field(default=0)
+
+    def update(self, dt: float) -> None:
+        """Advance the animation timer by `dt` seconds."""
+        self.elapsed += dt
+        self.frame = int(self.elapsed * self.fps) % len(self.textures)
+
+    def draw(
+        self,
+        x: float,
+        y: float,
+        scale: float = 1.0,
+        tint: rl.Color = rl.WHITE,
+    ) -> None:
+        """Draw the current frame with its top-left corner at (x, y)."""
+        tex = self.textures[self.frame]
+        src = rl.Rectangle(0.0, 0.0, float(tex.width), float(tex.height))
+        dst = rl.Rectangle(x, y, tex.width * scale, tex.height * scale)
+        rl.draw_texture_pro(tex, src, dst, rl.Vector2(0, 0), 0.0, tint)
+
+    def unload(self) -> None:
+        for tex in self.textures:
+            rl.unload_texture(tex)

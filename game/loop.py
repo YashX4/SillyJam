@@ -8,9 +8,9 @@ import os
 
 import pyray as rl
 
-from game import controls, draw, menu, physics
+from game import controls, dialog, draw, menu, physics
 from game.menu import MenuAction
-from game.sprite_data import demo_sprite, pipes
+from game.sprite_data import ballbot, demo_sprite, pipes
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
@@ -33,7 +33,20 @@ async def run() -> None:
     state.sprite = demo_sprite.load_demo_sprite()
     state.pipe_sheet = pipes.load_pipe_sheet()
     state.water_pipe_sheet = pipes.load_water_pipe_sheet()
+    state.ballbot = ballbot.load_ballbot()
     dt_accumulator = 0.0
+
+    # Test dialogs (see prompt): "[" opens a 3-sentence one, "]" a simple one.
+    TEST_DIALOG_LONG = [
+        "Hello! I'm ballbot, here to show you the ropes.",
+        "Click pipes to place them and route water from the sources.",
+        "Press the Next button or any key to dismiss me. Good luck!",
+    ]
+    TEST_DIALOG_SHORT = ["This is a quick test message."]
+    DIALOG_OPEN_KEYS = (
+        rl.KeyboardKey.KEY_LEFT_BRACKET,
+        rl.KeyboardKey.KEY_RIGHT_BRACKET,
+    )
 
     while not rl.window_should_close():
 
@@ -49,7 +62,19 @@ async def run() -> None:
             await asyncio.sleep(0)
             continue
 
-        controls.handle_input(state.grid_state)
+        # Open the test dialogs (allowed even while one is showing).
+        if rl.is_key_pressed(rl.KeyboardKey.KEY_LEFT_BRACKET):
+            state.dialog.open(TEST_DIALOG_LONG)
+        if rl.is_key_pressed(rl.KeyboardKey.KEY_RIGHT_BRACKET):
+            state.dialog.open(TEST_DIALOG_SHORT)
+
+        if state.dialog.active:
+            # Dialog is modal: only advancing input, no grid interaction.
+            dialog.handle_dialog_input(state.dialog, ignore_keys=DIALOG_OPEN_KEYS)
+            if state.ballbot is not None:
+                state.ballbot.update(rl.get_frame_time())
+        else:
+            controls.handle_input(state.grid_state)
 
         state.sprite.update(rl.get_frame_time())
 
@@ -70,4 +95,6 @@ async def run() -> None:
     state.sprite.unload()
     state.pipe_sheet.unload()
     state.water_pipe_sheet.unload()
+    if state.ballbot is not None:
+        state.ballbot.unload()
     rl.close_window()

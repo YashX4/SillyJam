@@ -8,8 +8,9 @@ from dataclasses import dataclass, field
 from enum import Enum, auto
 
 from game import grid
+from game.dialog import DialogState
 from game.types import Cell, PipeSprite
-from game.spritesheet import AnimatedSprite, SpriteSheet
+from game.spritesheet import AnimatedSprite, FrameSprite, SpriteSheet
 from game.config import GRID_COLS, GRID_ROWS
 
 INITIAL_X = 400.0
@@ -52,8 +53,10 @@ class GameState:
     last_flow_step_time: float = -float('inf')
     scene: Scene = Scene.MENU
     grid_state: GridState = field(default_factory=GridState)
+    dialog: DialogState = field(default_factory=DialogState)
 
     # Loaded after init_window (needs a GL context), so they start as None.
     sprite: AnimatedSprite | None = None
     pipe_sheet: SpriteSheet | None = None
     water_pipe_sheet: SpriteSheet | None = None
+    ballbot: FrameSprite | None = None
