@@ -33,6 +33,13 @@ class GridState:
     debug_rect_tl: Cell = field(default_factory=lambda: Cell(x=0, y=0))
     debug_rect_br: Cell = field(default_factory=lambda: Cell(x=4, y=4))
 
+    # Debug circle: red outline centered on `debug_circle_center`, with a radius
+    # of `debug_circle_radius` cells. Toggled with "'".
+    show_debug_circle: bool = False
+    debug_circle_center: Cell = field(default_factory=lambda: Cell(x=10, y=10))
+    debug_circle_radius: float = 3.0
+    debug_circle_thickness: float = 3.0
+
     def get_hover_cell(self, mouse_x, mouse_y) -> Cell:
         coords: Cell = grid.pixel_to_cell(mouse_x, mouse_y)
         if grid.in_bounds(coords.x, coords.y):

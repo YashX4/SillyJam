@@ -46,6 +46,11 @@ def draw(state: GameState, alpha: float) -> None:
     if state.grid_state.show_debug_rect:
         draw_cell_rect(state.grid_state.debug_rect_tl, state.grid_state.debug_rect_br)
 
+    if state.grid_state.show_debug_circle:
+        draw_cell_circle(
+            state.grid_state.debug_circle_center, state.grid_state.debug_circle_radius
+        )
+
     rl.end_mode_2d()
 
     if state.dialog.active:
@@ -223,6 +228,18 @@ def draw_cell_rect(top_left, bottom_right) -> None:
     width = (bottom_right.x - top_left.x + 1) * CELL_SIZE
     height = (bottom_right.y - top_left.y + 1) * CELL_SIZE
     rl.draw_rectangle_lines_ex(rl.Rectangle(x, y, width, height), 2, rl.RED)
+
+
+def draw_cell_circle(center, radius) -> None:
+    """Draw a red outline circle centered on `center`, `radius` cells wide.
+
+    The circle is centered on the middle of the given cell and its radius is
+    measured in cells (so radius 1 reaches the edge of an adjacent cell).
+    """
+    x, y = grid.cell_coords_to_top_left_pixel(center.x, center.y)
+    cx = x + CELL_SIZE / 2
+    cy = y + CELL_SIZE / 2
+    rl.draw_circle_lines(int(cx), int(cy), radius * CELL_SIZE, rl.RED)
 
 
 def draw_grid() -> None:
