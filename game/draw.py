@@ -1,7 +1,13 @@
 import pyray as rl
 
 from game import dialog, grid
-from game.config import CELL_SIZE, VIEWPORT_WIDTH, VIEWPORT_HEIGHT
+from game.config import (
+    CELL_SIZE,
+    VIEWPORT_WIDTH,
+    VIEWPORT_HEIGHT,
+    WORLD_WIDTH,
+    WORLD_HEIGHT,
+)
 from game.state import GameState
 from game.types import PipeSprite
 
@@ -9,6 +15,9 @@ from game.types import PipeSprite
 def draw(state: GameState, alpha: float) -> None:
     rl.begin_drawing()
     rl.clear_background(rl.RAYWHITE)
+
+    # World-space rendering: everything on the grid is drawn through the camera.
+    rl.begin_mode_2d(state.camera)
 
     if state.pipe_sheet is not None:
         draw_pipes(state)
@@ -18,15 +27,16 @@ def draw(state: GameState, alpha: float) -> None:
         sprite_y = 40
         state.sprite.draw(sprite_x, sprite_y)
 
-
     if state.grid_state.show_grid:
-        mpos = rl.get_mouse_position()
-        hover_cell = state.grid_state.get_hover_cell(mpos.x, mpos.y)
+        world = rl.get_screen_to_world_2d(rl.get_mouse_position(), state.camera)
+        hover_cell = state.grid_state.get_hover_cell(world.x, world.y)
         xPos, yPos = grid.cell_to_px(hover_cell)
         rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
         draw_grid()
         draw_sources(state)
         draw_flow(state)
+
+    rl.end_mode_2d()
 
     if state.dialog.active:
         draw_dialog(state)
@@ -143,8 +153,8 @@ def draw_dialog(state: GameState) -> None:
 
 
 def draw_grid() -> None:
-    """Draw the CELL_SIZE overlay grid across the whole screen."""
-    for x in range(0, VIEWPORT_WIDTH + 1, CELL_SIZE):
-        rl.draw_line(x, 0, x, VIEWPORT_HEIGHT, rl.LIGHTGRAY)
-    for y in range(0, VIEWPORT_HEIGHT + 1, CELL_SIZE):
-        rl.draw_line(0, y, VIEWPORT_WIDTH, y, rl.LIGHTGRAY)
+    """Draw the CELL_SIZE overlay grid across the whole world."""
+    for x in range(0, WORLD_WIDTH + 1, CELL_SIZE):
+        rl.draw_line(x, 0, x, WORLD_HEIGHT, rl.LIGHTGRAY)
+    for y in range(0, WORLD_HEIGHT + 1, CELL_SIZE):
+        rl.draw_line(0, y, WORLD_WIDTH, y, rl.LIGHTGRAY)

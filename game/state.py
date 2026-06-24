@@ -7,6 +7,8 @@ Mutable game state.
 from dataclasses import dataclass, field
 from enum import Enum, auto
 
+import pyray as rl
+
 from game import grid
 from game.dialog import DialogState
 from game.types import Cell, PipeSprite
@@ -54,6 +56,16 @@ class GameState:
     scene: Scene = Scene.MENU
     grid_state: GridState = field(default_factory=GridState)
     dialog: DialogState = field(default_factory=DialogState)
+
+    # World camera: pan/zoom across the (much larger than viewport) grid.
+    camera: rl.Camera2D = field(
+        default_factory=lambda: rl.Camera2D(
+            rl.Vector2(0.0, 0.0),  # offset (screen-space)
+            rl.Vector2(0.0, 0.0),  # target (world-space point at offset)
+            0.0,                   # rotation
+            1.0,                   # zoom
+        )
+    )
 
     # Loaded after init_window (needs a GL context), so they start as None.
     sprite: AnimatedSprite | None = None

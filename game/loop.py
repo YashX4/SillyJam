@@ -74,7 +74,7 @@ async def run() -> None:
             if state.ballbot is not None:
                 state.ballbot.update(rl.get_frame_time())
         else:
-            controls.handle_input(state.grid_state)
+            controls.handle_input(state)
 
         state.sprite.update(rl.get_frame_time())
 
