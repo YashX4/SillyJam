@@ -10,7 +10,7 @@ import pyray as rl
 
 from game import controls, dialog, draw, menu, physics
 from game.menu import MenuAction
-from game.sprite_data import ballbot, demo_sprite, pipes
+from game.sprite_data import ballbot, demo_sprite, parallax, pipes
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
@@ -30,6 +30,7 @@ async def run() -> None:
     rl.set_target_fps(TARGET_FPS)
 
     state = GameState()
+    state.background = parallax.load_background()
     state.sprite = demo_sprite.load_demo_sprite()
     state.pipe_sheet = pipes.load_pipe_sheet()
     state.water_pipe_sheet = pipes.load_water_pipe_sheet()
@@ -93,6 +94,8 @@ async def run() -> None:
         await asyncio.sleep(0)
 
     state.sprite.unload()
+    if state.background is not None:
+        state.background.unload()
     state.pipe_sheet.unload()
     state.water_pipe_sheet.unload()
     if state.ballbot is not None:

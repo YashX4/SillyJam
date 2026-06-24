@@ -16,6 +16,10 @@ def draw(state: GameState, alpha: float) -> None:
     rl.begin_drawing()
     rl.clear_background(rl.RAYWHITE)
 
+    # Parallax skyline backdrop, drawn in screen space behind the world.
+    if state.background is not None:
+        state.background.draw(state.camera)
+
     # World-space rendering: everything on the grid is drawn through the camera.
     rl.begin_mode_2d(state.camera)
 

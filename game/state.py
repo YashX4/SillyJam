@@ -12,11 +12,9 @@ import pyray as rl
 from game import grid
 from game.dialog import DialogState
 from game.types import Cell, PipeSprite
+from game.sprite_data.parallax import ParallaxBackground
 from game.spritesheet import AnimatedSprite, FrameSprite, SpriteSheet
 from game.config import GRID_COLS, GRID_ROWS
-
-INITIAL_X = 400.0
-INITIAL_Y = 225.0
 
 
 class Scene(Enum):
@@ -69,6 +67,7 @@ class GameState:
 
     # Loaded after init_window (needs a GL context), so they start as None.
     sprite: AnimatedSprite | None = None
+    background: ParallaxBackground | None = None
     pipe_sheet: SpriteSheet | None = None
     water_pipe_sheet: SpriteSheet | None = None
     ballbot: FrameSprite | None = None
