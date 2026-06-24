@@ -48,6 +48,8 @@ class GridState:
 @dataclass
 class GameState:
 
+    initial_game_time: float = 0.0
+    last_flow_step_time: float = -float('inf')
     scene: Scene = Scene.MENU
     grid_state: GridState = field(default_factory=GridState)
 

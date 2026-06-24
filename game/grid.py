@@ -55,3 +55,25 @@ def connected_neighbors(grid: GridState, cell: Cell) -> list[Cell]:
         if cells_connected(cell, adj_cell, direction):
             neighbors.append(adj_cell)
     return neighbors
+
+
+def compute_flow(grid: GridState) -> None:
+    """Flood `has_flow` outward from every source via connected pipes (BFS)."""
+    # Clear any flow from the previouassets/images/pipes_with_air_space.pngs pass.
+    for row in grid.grid:
+        for cell in row:
+            cell.has_flow = False
+
+    queue: list[Cell] = []
+    for row in grid.grid:
+        for cell in row:
+            if cell.is_source:
+                cell.has_flow = True
+                queue.append(cell)
+
+    while queue:
+        cell = queue.pop(0)
+        for neighbor in connected_neighbors(grid, cell):
+            if not neighbor.has_flow:
+                neighbor.has_flow = True
+                queue.append(neighbor)
