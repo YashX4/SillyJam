@@ -32,11 +32,9 @@ def draw(state: GameState, alpha: float) -> None:
         sprite_y = 40
         state.sprite.draw(sprite_x, sprite_y)
 
+    draw_hover_selection(state)
+
     if state.grid_state.show_grid:
-        world = rl.get_screen_to_world_2d(rl.get_mouse_position(), state.camera)
-        hover_cell = state.grid_state.get_hover_cell(world.x, world.y)
-        xPos, yPos = grid.cell_to_px(hover_cell)
-        rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
         draw_grid()
         draw_sources(state)
         draw_flow(state)
@@ -68,6 +66,18 @@ def draw_pipes(state: GameState) -> None:
                 sheet = state.water_pipe_sheet
             if sheet is not None:
                 sheet.draw_frame(cell.pipe, x, y)
+
+
+def draw_hover_selection(state: GameState) -> None:
+    """Draw the looping selection highlight over the cell under the cursor."""
+    if state.selection_sprite is None:
+        return
+    world = rl.get_screen_to_world_2d(rl.get_mouse_position(), state.camera)
+    hover_cell = state.grid_state.get_hover_cell(world.x, world.y)
+    if not grid.in_bounds(hover_cell.x, hover_cell.y):
+        return
+    x, y = grid.cell_to_px(hover_cell)
+    state.selection_sprite.draw(x, y)
 
 
 def draw_boilers(state: GameState) -> None:

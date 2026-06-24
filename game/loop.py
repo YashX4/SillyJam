@@ -10,7 +10,7 @@ import pyray as rl
 
 from game import controls, dialog, draw, menu, physics
 from game.menu import MenuAction
-from game.sprite_data import ballbot, boiler, demo_sprite, parallax, pipes
+from game.sprite_data import ballbot, boiler, demo_sprite, parallax, pipes, selection
 from game.config import (
     MAX_FRAME_TIME,
     PHYSICS_DT,
@@ -37,6 +37,7 @@ async def run() -> None:
     state.ballbot = ballbot.load_ballbot()
     state.pump_sprite = pipes.load_pump_pipe_sprite()
     state.boiler_sprite = boiler.load_boiler_sprite()
+    state.selection_sprite = selection.load_selection_sprite()
     dt_accumulator = 0.0
 
     # Test dialogs (see prompt): "[" opens a 3-sentence one, "]" a simple one.
@@ -84,6 +85,8 @@ async def run() -> None:
             state.pump_sprite.update(rl.get_frame_time())
         if state.boiler_sprite is not None:
             state.boiler_sprite.update(rl.get_frame_time())
+        if state.selection_sprite is not None:
+            state.selection_sprite.update(rl.get_frame_time())
 
         # aka avoid spiral of death.
         dt_accumulator += min(rl.get_frame_time(), MAX_FRAME_TIME)
@@ -110,4 +113,6 @@ async def run() -> None:
         state.pump_sprite.unload()
     if state.boiler_sprite is not None:
         state.boiler_sprite.unload()
+    if state.selection_sprite is not None:
+        state.selection_sprite.unload()
     rl.close_window()

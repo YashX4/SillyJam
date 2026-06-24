@@ -113,3 +113,4 @@ class GameState:
     ballbot: FrameSprite | None = None
     pump_sprite: FrameSprite | None = None
     boiler_sprite: FrameSprite | None = None
+    selection_sprite: FrameSprite | None = None
