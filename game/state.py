@@ -159,7 +159,7 @@ class GameState:
             rl.Vector2(0.0, 0.0),  # offset (screen-space)
             rl.Vector2(0.0, 0.0),  # target (world-space point at offset)
             0.0,                   # rotation
-            1.0,                   # zoom
+            1.5,                   # zoom
         )
     )
 

@@ -11,12 +11,23 @@ from game.config import (
     CAMERA_ZOOM_MAX,
     CAMERA_ZOOM_MIN,
     CAMERA_ZOOM_STEP,
+    CELL_SIZE,
     GEAR_FPS_MAX,
     GEAR_FPS_MIN,
     GEAR_FPS_STEP,
     GRID_COLS,
     GRID_ROWS,
 )
+from game.types import Cell
+
+
+def center_camera_on_cell(camera: rl.Camera2D, cell: Cell) -> None:
+    """Move the camera so that `cell` is centered on screen."""
+    px, py = grid.cell_to_px(cell)
+    camera.target.x = px + CELL_SIZE / 2
+    camera.target.y = py + CELL_SIZE / 2
+    camera.offset.x = rl.get_screen_width() / 2
+    camera.offset.y = rl.get_screen_height() / 2
 from game.state import GameState, GridState
 from game.types import PipeSprite
 
@@ -26,6 +37,8 @@ def handle_input(state: GameState) -> None:
 
     gridstate = state.grid_state
     handle_mouse_click(gridstate, state.camera)
+    if rl.is_mouse_button_pressed(rl.MouseButton.MOUSE_BUTTON_MIDDLE):
+        center_camera_on_cell(state.camera, hover_cell(gridstate, state.camera))
     if rl.is_key_pressed(rl.KeyboardKey.KEY_P):
         gridstate.show_grid = not gridstate.show_grid
     if rl.is_key_pressed(rl.KeyboardKey.KEY_SEMICOLON):
@@ -98,6 +111,7 @@ def handle_camera(camera: rl.Camera2D) -> None:
         after = rl.get_screen_to_world_2d(mouse, camera)
         camera.target.x += before.x - after.x
         camera.target.y += before.y - after.y
+        print(f"zoom: {camera.zoom:.3f}")
 
 
 def handle_mouse_click(gridstate: GridState, camera: rl.Camera2D) -> None:
