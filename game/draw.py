@@ -82,8 +82,8 @@ def draw_hover_selection(state: GameState) -> None:
 
 def draw_boilers(state: GameState) -> None:
     """Draw the animated boiler over its 2x2 footprint at each placed origin."""
-    for col, row in state.grid_state.boilers:
-        x, y = grid.cell_coords_to_top_left_pixel(col, row)
+    for boiler in state.grid_state.boilers:
+        x, y = grid.cell_coords_to_top_left_pixel(boiler.col, boiler.row)
         # The boiler texture is 64x64 == 2x2 cells, so scale 1.0 fits exactly.
         if state.boiler_sprite is not None:
             state.boiler_sprite.draw(x, y)

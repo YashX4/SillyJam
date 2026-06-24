@@ -17,6 +17,10 @@ WORLD_HEIGHT = GRID_ROWS * CELL_SIZE
 # A boiler's 64x64 sprite spans this many cells in each direction (2x2 footprint).
 BOILER_SPAN = 2
 
+# How fast a boiler heats up, in heat units per second, and the cap it climbs to.
+BOILER_HEAT_RATE = 1.0
+BOILER_HEAT_MAX = 500.0
+
 # Camera pan/zoom limits.
 CAMERA_PAN_SPEED = 600.0  # pixels per second (in world units, before zoom)
 CAMERA_ZOOM_MIN = 0.25

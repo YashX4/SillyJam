@@ -11,7 +11,7 @@ import pyray as rl
 
 from game import grid
 from game.dialog import DialogState
-from game.types import Cell, PipeSprite
+from game.types import Boiler, Cell, PipeSprite
 from game.sprite_data.parallax import ParallaxBackground
 from game.spritesheet import AnimatedSprite, FrameSprite, SpriteSheet
 from game.config import BOILER_SPAN, GRID_COLS, GRID_ROWS
@@ -52,14 +52,17 @@ class GridState:
         if grid.in_bounds(col, row) and not self.cell_in_boiler(col, row):
             self.grid[row][col].is_source = not self.grid[row][col].is_source
 
-    # Top-left (col, row) of each placed boiler. Each boiler spans BOILER_SPAN
-    # cells in both directions (a 2x2 block).
-    boilers: list[tuple[int, int]] = field(default_factory=list)
+    # Each placed boiler tracks its own top-left (col, row) and accumulated heat.
+    # Each boiler spans BOILER_SPAN cells in both directions (a 2x2 block).
+    boilers: list[Boiler] = field(default_factory=list)
 
     def cell_in_boiler(self, col: int, row: int) -> bool:
         """True if (col, row) falls within any placed boiler's 2x2 footprint."""
-        for bcol, brow in self.boilers:
-            if bcol <= col < bcol + BOILER_SPAN and brow <= row < brow + BOILER_SPAN:
+        for boiler in self.boilers:
+            if (
+                boiler.col <= col < boiler.col + BOILER_SPAN
+                and boiler.row <= row < boiler.row + BOILER_SPAN
+            ):
                 return True
         return False
 
@@ -83,7 +86,7 @@ class GridState:
                     or cell.is_source
                 ):
                     return False
-        self.boilers.append((col, row))
+        self.boilers.append(Boiler(col=col, row=row))
         return True
     
 @dataclass

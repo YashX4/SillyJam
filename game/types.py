@@ -86,3 +86,15 @@ class Cell:
     pipe: PipeSprite = PipeSprite.AIR
     is_source: bool = False
     has_flow: bool = False
+
+
+@dataclass
+class Boiler:
+    """A placed boiler. (col, row) is its top-left cell; it spans a 2x2 block.
+
+    `heat` accumulates over time while the boiler sits on the map.
+    """
+
+    col: int
+    row: int
+    heat: float = 0.0
