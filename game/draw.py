@@ -20,7 +20,9 @@ def draw(state: GameState, alpha: float) -> None:
 
 
     if state.grid_state.show_grid:
-        xPos, yPos = grid.cell_to_px(state.grid_state.curr_hovered_cell)
+        mpos = rl.get_mouse_position()
+        hover_cell = state.grid_state.get_hover_cell(mpos.x, mpos.y)
+        xPos, yPos = grid.cell_to_px(hover_cell)
         rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
         draw_grid()
 

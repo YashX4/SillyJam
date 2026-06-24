@@ -17,7 +17,10 @@ INITIAL_Y = 225.0
 @dataclass
 class GridState:
     show_grid: bool = False
-    curr_hovered_cell: Cell = field(default_factory=lambda: Cell(x=0, y=0, pipe=PipeSprite.AIR))
+    
+    def get_hover_cell(self, mouse_x, mouse_y) -> Cell:
+        cell: Cell = grid.pixel_to_cell(mouse_x, mouse_y)
+        return cell
 
     grid: list[list[Cell]] = field(
         default_factory=lambda: [[Cell(x=x, y=y, pipe=PipeSprite.AIR) for x in range(GRID_COLS)] for y in range(GRID_ROWS)]
