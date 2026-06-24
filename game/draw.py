@@ -26,6 +26,7 @@ def draw(state: GameState, alpha: float) -> None:
         rl.draw_circle(int(xPos), int(yPos), 20, rl.RED)
         draw_grid()
         draw_sources(state)
+        draw_flow(state)
 
     FPS_TEXT_POS_X = VIEWPORT_WIDTH - 90
     FPS_TEXT_POS_Y = 10
@@ -54,6 +55,18 @@ def draw_sources(state: GameState) -> None:
                 continue
             x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
             rl.draw_rectangle(x + offset, y + offset, SQUARE_SIZE, SQUARE_SIZE, rl.BLUE)
+
+
+def draw_flow(state: GameState) -> None:
+    """Draw a small green square in each cell that has flow (debug overlay)."""
+    SQUARE_SIZE = CELL_SIZE // 4
+    offset = CELL_SIZE // 8
+    for row_num, row in enumerate(state.grid_state.grid):
+        for col_num, cell in enumerate(row):
+            if not cell.has_flow:
+                continue
+            x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
+            rl.draw_rectangle(x + offset, y + offset, SQUARE_SIZE, SQUARE_SIZE, rl.GREEN)
 
 
 def draw_grid() -> None:
