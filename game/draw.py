@@ -41,8 +41,12 @@ def draw_pipes(state: GameState) -> None:
             if cell.pipe is PipeSprite.AIR:
                 continue
             x, y = grid.cell_coords_to_top_left_pixel(col_num, row_num)
-            if state.pipe_sheet is not None:
-                state.pipe_sheet.draw_frame(cell.pipe, x, y)
+            # Cells with flow use the water-filled variant of the same frame.
+            sheet = state.pipe_sheet
+            if cell.has_flow and state.water_pipe_sheet is not None:
+                sheet = state.water_pipe_sheet
+            if sheet is not None:
+                sheet.draw_frame(cell.pipe, x, y)
 
 
 def draw_sources(state: GameState) -> None:

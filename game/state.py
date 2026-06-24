@@ -56,3 +56,4 @@ class GameState:
     # Loaded after init_window (needs a GL context), so they start as None.
     sprite: AnimatedSprite | None = None
     pipe_sheet: SpriteSheet | None = None
+    water_pipe_sheet: SpriteSheet | None = None

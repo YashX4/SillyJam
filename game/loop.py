@@ -32,6 +32,7 @@ async def run() -> None:
     state = GameState()
     state.sprite = demo_sprite.load_demo_sprite()
     state.pipe_sheet = pipes.load_pipe_sheet()
+    state.water_pipe_sheet = pipes.load_water_pipe_sheet()
     dt_accumulator = 0.0
 
     while not rl.window_should_close():
@@ -68,4 +69,5 @@ async def run() -> None:
 
     state.sprite.unload()
     state.pipe_sheet.unload()
+    state.water_pipe_sheet.unload()
     rl.close_window()
