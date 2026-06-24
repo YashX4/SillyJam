@@ -19,6 +19,7 @@ def handle_input(gridstate: GridState) -> None:
     if rl.is_key_pressed(rl.KeyboardKey.KEY_C):
         mouse_pos = rl.get_mouse_position()
         hover_cell = gridstate.get_hover_cell(mouse_pos.x, mouse_pos.y)
+        print("hover_cell = ", hover_cell)
         if hover_cell.pipe != PipeSprite.AIR:
             res = grid.connected_neighbors(gridstate, hover_cell)
             print("connected_neighbors = ", res)
